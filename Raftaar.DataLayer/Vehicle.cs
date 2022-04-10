@@ -11,5 +11,9 @@ namespace Raftaar.DataLayer
         public string Model { get; set; }
         public int Year { get; set; }
         public int Odometer { get; set; }
+
+        #region Methods
+        public override string ToString() => $"Id:{Id}, Name:{Name}, Make:{Make}, Model:{Model}, Year:{Year}, Odometer:{Odometer}";
+        #endregion
     }
 }

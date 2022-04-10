@@ -15,5 +15,9 @@ namespace Raftaar.DataLayer
 
         public int GasStationId { get; set; }
         public virtual GasStation GasStation { get; set; }
+
+        #region Methods
+        public override string ToString() => $"Id:{Id}, Date:{Date}, Gallons:{Gallons}, Price:{Price}, Odometer:{Odometer}";
+        #endregion
     }
 }
