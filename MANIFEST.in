@@ -1,0 +1,4 @@
+include raftaar/schema.sql
+graft raftaar/static
+graft raftaar/templates
+global-exclude *.pyc
