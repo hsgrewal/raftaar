@@ -13,6 +13,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from raftaar.db import get_db
+from utils.enums import color
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -22,19 +23,32 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
+        first_name = request.form['firstName']
+        last_name = request.form['lastName']
         error = None
 
         if not username:
             error = 'Username is required'
         elif not password:
             error = 'Password is required'
+        elif not first_name:
+            error = 'First Name is required'
+        elif not last_name:
+            error = 'Last Name is required'
 
         if error is None:
+            db = get_db()
             try:
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    'INSERT INTO'
+                    ' user (username, password, first_name, last_name)'
+                    ' VALUES (?, ?, ?, ?)',
+                    (
+                        username,
+                        generate_password_hash(password),
+                        first_name,
+                        last_name
+                    ),
                 )
                 db.commit()
             except db.IntegrityError:
@@ -42,7 +56,7 @@ def register():
             else:
                 return redirect(url_for("auth.login"))
 
-        flash(error)
+        flash(error, color.danger.name)
 
     return render_template('auth/register.html')
 
@@ -68,7 +82,7 @@ def login():
             session['user_id'] = user['id']
             return redirect(url_for('index'))
 
-        flash(error)
+        flash(error, color.danger.name)
 
     return render_template('auth/login.html')
 
