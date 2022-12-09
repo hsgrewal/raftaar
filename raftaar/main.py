@@ -11,6 +11,7 @@ from werkzeug.exceptions import abort
 
 from raftaar.auth import login_required
 from raftaar.db import get_db
+from utils.enums import color
 
 bp = Blueprint('main', __name__)
 
@@ -38,7 +39,7 @@ def create():
             error = 'Title is required'
         
         if error is not None:
-            flash(error)
+            flash(error, color.warning.name)
         else:
             db = get_db()
             db.execute(
@@ -83,7 +84,7 @@ def update(id):
             error = 'Title is required'
 
         if error is not None:
-            flash(error)
+            flash(error, color.warning.name)
 
         else:
             db = get_db()
