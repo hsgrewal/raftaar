@@ -41,8 +41,11 @@
         {% block header %}{% endblock %}
         <div class="row g-3 justify-content-center">
           <div class="col-md-6">
-            {% for message in get_flashed_messages() %}
-            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% for type, message in get_flashed_messages(with_categories=True) %}
+            <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             {% endfor %}
           </div>
         </div>
