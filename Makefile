@@ -12,7 +12,7 @@ run:
 	flask --app raftaar --debug run
 
 db:
-	flask -app raftaar init-db
+	flask --app raftaar init-db
 
 venv:
 	python3 -m venv venv
