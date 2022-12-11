@@ -25,6 +25,7 @@ CREATE TABLE post (
 CREATE TABLE vehicle (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   owner_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
   vin TEXT NOT NULL,
   license_plate TEXT NOT NULL,
   year TEXT NOT NULL,

@@ -20,7 +20,7 @@ bp = Blueprint('vehicle', __name__, url_prefix='/vehicle')
 @login_required
 def index():
     db = get_db()
-    query = f"SELECT v.id, vin, license_plate, year, make, model, first_name || ' ' || last_name as owner FROM vehicle v JOIN user u ON v.owner_id = u.id WHERE v.owner_id = {g.user['id']} ORDER BY year DESC"
+    query = f"SELECT name, vin, license_plate, year, make, model, first_name || ' ' || last_name as owner FROM vehicle v JOIN user u ON v.owner_id = u.id WHERE v.owner_id = {g.user['id']} ORDER BY year DESC"
     vehicles = db.execute(query).fetchall()
     return render_template('vehicle/vehicle.html', vehicles=vehicles)
 
@@ -29,6 +29,7 @@ def index():
 @login_required
 def add():
     if request.method == 'POST':
+        name = request.form['name']
         vin = request.form['vin']
         license_plate = request.form['licensePlate']
         year = request.form['year']
@@ -36,7 +37,9 @@ def add():
         model = request.form['model']
         error = None
 
-        if not vin:
+        if not name:
+            error = 'Name is required'
+        elif not vin:
             error = 'VIN is required'
         elif not license_plate:
             error = 'License Plate is required'
@@ -52,9 +55,9 @@ def add():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO vehicle (owner_id, vin, license_plate, year, make, model)'
-                ' VALUES (?, ?, ?, ?, ?, ?)',
-                (g.user['id'], vin, license_plate, year, make, model)
+                'INSERT INTO vehicle (owner_id, name, vin, license_plate, year, make, model)'
+                ' VALUES (?, ?, ?, ?, ?, ?, ?)',
+                (g.user['id'], name, vin, license_plate, year, make, model)
             )
             db.commit()
             return redirect(url_for('vehicle.index'))
