@@ -13,7 +13,7 @@ from flask import (
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from raftaar.db import get_db
-from utils.enums import color
+from utils.enums import Color
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -56,11 +56,12 @@ def register():
             else:
                 return redirect(url_for("auth.login"))
 
-        flash(error, color.danger.name)
+        flash(error, Color.danger.name)
 
     return render_template('auth/register.html')
 
 
+@bp.route('/', methods=('GET', 'POST'))
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
@@ -82,7 +83,7 @@ def login():
             session['user_id'] = user['id']
             return redirect(url_for('index'))
 
-        flash(error, color.danger.name)
+        flash(error, Color.danger.name)
 
     return render_template('auth/login.html')
 

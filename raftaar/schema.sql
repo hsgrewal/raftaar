@@ -26,10 +26,10 @@ CREATE TABLE vehicle (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   owner_id INTEGER NOT NULL,
   vin TEXT NOT NULL,
-  license_plate TEXT,
-  year TEXT,
-  make TEXT,
-  model TEXT,
+  license_plate TEXT NOT NULL,
+  year TEXT NOT NULL,
+  make TEXT NOT NULL,
+  model TEXT NOT NULL,
   FOREIGN KEY (owner_id) REFERENCES user (id)
 );
 

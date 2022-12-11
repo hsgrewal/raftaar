@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class color(Enum):
+class Color(Enum):
     primary = 1
     secondary = 2
     success = 3
