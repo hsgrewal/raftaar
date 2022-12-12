@@ -20,7 +20,9 @@ bp = Blueprint('vehicle', __name__, url_prefix='/vehicle')
 @login_required
 def index():
     db = get_db()
-    query = f"SELECT v.id, name, vin, license_plate, year, make, model, first_name || ' ' || last_name as owner FROM vehicle v JOIN user u ON v.owner_id = u.id WHERE v.owner_id = {g.user['id']}"
+    query = f"""SELECT v.id, name, vin, license_plate, year, make, model,
+        first_name || ' ' || last_name as owner FROM vehicle v
+        JOIN user u ON v.owner_id = u.id WHERE v.owner_id = {g.user['id']}"""
     vehicles = db.execute(query).fetchall()
     return render_template('vehicle/vehicle.html', vehicles=vehicles)
 
@@ -39,7 +41,9 @@ def add():
 
 
 def get_vehicle(id, check_owner=True):
-    query = f'SELECT v.id, owner_id, name, vin, license_plate, year, make, model FROM vehicle v JOIN user u ON v.owner_id = u.id WHERE v.id = {id}'
+    query = f"""SELECT v.id, owner_id, name, vin, license_plate, year, make,
+        model FROM vehicle v JOIN user u ON v.owner_id = u.id
+        WHERE v.id = {id}"""
     vehicle = get_db().execute(query).fetchone()
 
     if vehicle is None:
@@ -97,8 +101,14 @@ def post_action(action, id=1):
         return 'Model is required'
 
     if action is Action.create:
-        query = f"INSERT INTO vehicle (owner_id, name, vin, license_plate, year, make, model) VALUES ({g.user['id']}, '{name}', '{vin}', '{license_plate}', '{year}', '{make}', '{model}')"
+        query = f"""INSERT INTO vehicle
+            (owner_id, name, vin, license_plate, year, make, model)
+            VALUES ({g.user['id']}, '{name}', '{vin}', '{license_plate}',
+            '{year}', '{make}', '{model}')"""
     else:
-        query = f"UPDATE vehicle SET name = '{name}', vin = '{vin}', license_plate = '{license_plate}', year = '{year}', make = '{make}', model = '{model}' WHERE id = {id}"
+        query = f"""UPDATE vehicle SET name = '{name}', vin = '{vin}',
+            license_plate = '{license_plate}', year = '{year}',
+            make = '{make}', model = '{model}' WHERE id = {id}"""
 
+    run_query(query)
     return None

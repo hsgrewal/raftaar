@@ -37,7 +37,7 @@ def create():
 
         if not title:
             error = 'Title is required'
-        
+
         if error is not None:
             flash(error, Color.warning.name)
         else:
