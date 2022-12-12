@@ -7,6 +7,10 @@ INSERT INTO vehicle (owner_id, name, vin, license_plate, year, make, model)
 VALUES
   (1, 'Raftaar', 'Test VIN', 'Test License Plate', 'Test Year', 'Test Make', 'Test Model');
 
+INSERT INTO gas (vehicle_id, date, gallons, cost, mileage)
+VALUES
+  (1, '2022-01-01 07:15:30.123', 9.185, 35.27, 75000);
+
 INSERT INTO post (title, body, author_id, created)
 VALUES
   ('test title', 'test' || x'0a' || 'body', 1, '2018-01-01 00:00:00');

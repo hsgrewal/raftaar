@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <header class="d-flex flex-wrap justify-content-center py-3">
+    <h1 class="d-flex align-items-center me-auto">{% block title %}Gas Log{% endblock %}</h1>
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link active" href="{{ url_for('gas.add') }}" aria-current="page">Add</a>
+      </li>
+    </ul>
+  </header>
+{% endblock %}
+
+{% block content %}
+{% if gas %}
+  <table class="table table-dark table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Gallons</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Mileage</th>
+            <th scope="col">Vehicle</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for log in gas %}
+      <tr>
+        <td>{{ log['date'] }}</th>
+        <td>{{ log['gallons'] }}</td>
+        <td>{{ log['cost'] }}</td>
+        <td>{{ log['mileage'] }}</td>
+        <td>{{ log['name'] }}</td>
+        <td><a class="btn btn-primary btn-sm" href="{{ url_for('gas.edit', id=log['id']) }}">Edit</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+<p>No gas purchases found. Please add one.</p>
+{% endif %}
+{% endblock %}
