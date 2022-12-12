@@ -21,14 +21,18 @@ def test_register(client, app):
         ).fetchone() is not None
 
 
-@pytest.mark.parametrize(('username', 'password', 'first_name', 'last_name', 'message'), (
-    ('', '', '', '', b'Username is required'),
-    ('a', '', '', '', b'Password is required'),
-    ('a', 'b', '', '', b'First Name is required'),
-    ('a', 'b', 'c', '', b'Last Name is required'),
-    ('test', 'test', 'a', 'b', b'already registered'),
-))
-def test_register_validate_input(client, username, password, first_name, last_name, message):
+@pytest.mark.parametrize(
+    ('username', 'password', 'first_name', 'last_name', 'message'), (
+        ('', '', '', '', b'Username is required'),
+        ('a', '', '', '', b'Password is required'),
+        ('a', 'b', '', '', b'First Name is required'),
+        ('a', 'b', 'c', '', b'Last Name is required'),
+        ('test', 'test', 'a', 'b', b'already registered'),
+    )
+)
+def test_register_validate_input(
+    client, username, password, first_name, last_name, message
+    ):
     response = client.post(
         '/auth/register',
         data={

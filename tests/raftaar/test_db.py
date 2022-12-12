@@ -1,7 +1,7 @@
 import sqlite3
 
 import pytest
-from raftaar.db import get_db
+from raftaar.db import get_db, run_query
 
 
 def test_get_close_db(app):
@@ -26,3 +26,14 @@ def test_init_db_command(runner, monkeypatch):
     result = runner.invoke(args=['init-db'])
     assert 'Initialized' in result.output
     assert Recorder.called
+
+
+@pytest.mark.parametrize(('query', 'result'), (
+    ("""INSERT INTO user (username, password, first_name, last_name)
+        VALUES ('test', 'test', 'Carl', 'Sagan')""", False),
+    ("""UPDATE user SET first_name = 'Issac', last_name = 'Newton'
+        WHERE id = 1""", True)
+))
+def test_run_query(app, query, result):
+    with app.app_context():
+        assert run_query(query) is result

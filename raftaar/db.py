@@ -16,7 +16,7 @@ def get_db():
 
 
 def close_db(e=None):
-    db=g.pop('db', None)
+    db = g.pop('db', None)
 
     if db is not None:
         db.close()
@@ -39,3 +39,14 @@ def init_db_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
+
+
+def run_query(query):
+    db = get_db()
+    try:
+        db.execute(query)
+        db.commit()
+    except db.IntegrityError:
+        return False
+    else:
+        return True

@@ -11,7 +11,7 @@ from werkzeug.exceptions import abort
 
 from raftaar.auth import login_required
 from raftaar.db import get_db
-from utils.enums import color
+from utils.enums import Color
 
 bp = Blueprint('main', __name__)
 
@@ -37,15 +37,15 @@ def create():
 
         if not title:
             error = 'Title is required'
-        
+
         if error is not None:
-            flash(error, color.warning.name)
+            flash(error, Color.warning.name)
         else:
             db = get_db()
             db.execute(
                 'INSERT INTO post (title, body, author_id)'
                 ' VALUES (?, ?, ?)',
-                (title,body, g.user['id'])
+                (title, body, g.user['id'])
             )
             db.commit()
             return redirect(url_for('index'))
@@ -84,7 +84,7 @@ def update(id):
             error = 'Title is required'
 
         if error is not None:
-            flash(error, color.warning.name)
+            flash(error, Color.warning.name)
 
         else:
             db = get_db()
