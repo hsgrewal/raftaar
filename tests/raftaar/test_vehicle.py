@@ -98,21 +98,25 @@ def test_edit(client, auth, app):
         assert post['name'] == 'Toofaan'
 
 
-@pytest.mark.parametrize(('path', 'name', 'vin', 'license_plate', 'year', 'make', 'model', 'message'), (
-    ('/vehicle/add', '', '', '', '', '', '', b'Name is required'),
-    ('/vehicle/add', 'a', '', '', '', '', '', b'VIN is required'),
-    ('/vehicle/add', 'a', 'b', '', '', '', '', b'License Plate is required'),
-    ('/vehicle/add', 'a', 'b', 'c', '', '', '', b'Year is required'),
-    ('/vehicle/add', 'a', 'b', 'c', 'd', '', '', b'Make is required'),
-    ('/vehicle/add', 'a', 'b', 'c', 'd', 'e', '', b'Model is required'),
-    ('/vehicle/edit/1', '', '', '', '', '', '', b'Name is required'),
-    ('/vehicle/edit/1', 'a', '', '', '', '', '', b'VIN is required'),
-    ('/vehicle/edit/1', 'a', 'b', '', '', '', '', b'License Plate is required'),
-    ('/vehicle/edit/1', 'a', 'b', 'c', '', '', '', b'Year is required'),
-    ('/vehicle/edit/1', 'a', 'b', 'c', 'd', '', '', b'Make is required'),
-    ('/vehicle/edit/1', 'a', 'b', 'c', 'd', 'e', '', b'Model is required'),
-))
-def test_create_update_validate(client, auth, path, name, vin, license_plate, year, make, model, message):
+@pytest.mark.parametrize(
+    ('path', 'name', 'vin', 'license_plate', 'year', 'make', 'model', 'message'), (
+        ('/vehicle/add', '', '', '', '', '', '', b'Name is required'),
+        ('/vehicle/add', 'a', '', '', '', '', '', b'VIN is required'),
+        ('/vehicle/add', 'a', 'b', '', '', '', '', b'License Plate is required'),
+        ('/vehicle/add', 'a', 'b', 'c', '', '', '', b'Year is required'),
+        ('/vehicle/add', 'a', 'b', 'c', 'd', '', '', b'Make is required'),
+        ('/vehicle/add', 'a', 'b', 'c', 'd', 'e', '', b'Model is required'),
+        ('/vehicle/edit/1', '', '', '', '', '', '', b'Name is required'),
+        ('/vehicle/edit/1', 'a', '', '', '', '', '', b'VIN is required'),
+        ('/vehicle/edit/1', 'a', 'b', '', '', '', '', b'License Plate is required'),
+        ('/vehicle/edit/1', 'a', 'b', 'c', '', '', '', b'Year is required'),
+        ('/vehicle/edit/1', 'a', 'b', 'c', 'd', '', '', b'Make is required'),
+        ('/vehicle/edit/1', 'a', 'b', 'c', 'd', 'e', '', b'Model is required'),
+    )
+)
+def test_create_update_validate(
+        client, auth, path, name, vin, license_plate, year, make, model, message
+    ):
     auth.login()
     response = client.post(path, data={
         'name': name,
