@@ -1,5 +1,6 @@
 clean:
 	rm -rf build dist *.egg-info .pytest_cache .coverage htmlcov
+	find . | grep -E "__pycache__|\.pyc|\.pyo" | xargs rm -rf
 
 coverage:
 	coverage run -m pytest
