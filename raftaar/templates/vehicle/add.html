@@ -8,27 +8,27 @@
   <form class="row g-2" method="post">
     <div class="col-md-6">
       <label for="name" class="form-label">Name</label>
-      <input class="form-control" name="name" id="name" placeholder="Name" required>
+      <input class="form-control" name="name" id="name" placeholder="Name" value="{{ request.form['name'] }}" required>
     </div>
     <div class="col-md-6">
       <label for="vin" class="form-label">VIN</label>
-      <input class="form-control" name="vin" id="vin" placeholder="Vehicle Identification Number" required>
+      <input class="form-control" name="vin" id="vin" placeholder="Vehicle Identification Number" value="{{ request.form['vin'] }}" required>
     </div>
     <div class="col-md-3">
       <label for="licensePlate" class="form-label">License Plate</label>
-      <input class="form-control" name="licensePlate" id="licensePlate" placeholder="1ABC234" required>
+      <input class="form-control" name="licensePlate" id="licensePlate" placeholder="1ABC234" value="{{ request.form['licensePlate'] }}" required>
     </div>
     <div class="col-md-3">
       <label for="year" class="form-label">Year</label>
-      <input class="form-control" name="year" id="year" placeholder="1969" required>
+      <input class="form-control" name="year" id="year" placeholder="1969" value="{{ request.form['year'] }}" required>
     </div>
     <div class="col-md-6">
       <label for="make" class="form-label">Make</label>
-      <input class="form-control" name="make" id="make" placeholder="Ford" required>
+      <input class="form-control" name="make" id="make" placeholder="Ford" value="{{ request.form['make'] }}" required>
     </div>
     <div class="col-md-6">
       <label for="model" class="form-label">Model</label>
-      <input class="form-control" name="model" id="model" placeholder="Mustang" required>
+      <input class="form-control" name="model" id="model" placeholder="Mustang" value="{{ request.form['model'] }}" required>
     </div>
     <div class="col-12">
       <button type="submit" class="btn btn-primary">Add</button>

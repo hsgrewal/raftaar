@@ -10,3 +10,10 @@ class Color(Enum):
     info = 6
     light = 7
     dark = 8
+
+
+class Action(Enum):
+    create = 1
+    read = 2
+    update = 3
+    delete = 4

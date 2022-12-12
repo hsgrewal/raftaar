@@ -23,6 +23,7 @@
             <th scope="col">Make</th>
             <th scope="col">Model</th>
             <th scope="col">Owner</th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -35,6 +36,7 @@
         <td>{{ vehicle['make'] }}</td>
         <td>{{ vehicle['model'] }}</td>
         <td>{{ vehicle['owner'] }}</td>
+        <td><a class="btn btn-primary btn-sm" href="{{ url_for('vehicle.edit', id=vehicle['id']) }}">Edit</a></td>
       </tr>
     {% endfor %}
     </tbody>

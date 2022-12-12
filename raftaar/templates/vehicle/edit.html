@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1 class="text-center">{% block title %}Edit "{{ vehicle['name'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form class="row g-2" method="post">
+    <div class="col-md-6">
+      <label for="name" class="form-label">Name</label>
+      <input class="form-control" name="name" id="name" placeholder="Name" value="{{ request.form['name'] or vehicle['name'] }}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="vin" class="form-label">VIN</label>
+      <input class="form-control" name="vin" id="vin" placeholder="Vehicle Identification Number" value="{{ request.form['vin'] or vehicle['vin'] }}" required>
+    </div>
+    <div class="col-md-3">
+      <label for="licensePlate" class="form-label">License Plate</label>
+      <input class="form-control" name="licensePlate" id="licensePlate" placeholder="1ABC234" value="{{ request.form['licensePlate'] or vehicle['license_plate'] }}" required>
+    </div>
+    <div class="col-md-3">
+      <label for="year" class="form-label">Year</label>
+      <input class="form-control" name="year" id="year" placeholder="1969" value="{{ request.form['year'] or vehicle['year'] }}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="make" class="form-label">Make</label>
+      <input class="form-control" name="make" id="make" placeholder="Ford" value="{{ request.form['make'] or vehicle['make'] }}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="model" class="form-label">Model</label>
+      <input class="form-control" name="model" id="model" placeholder="Mustang" value="{{ request.form['model'] or vehicle['model'] }}" required>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+  <hr>
+  <form action="{{ url_for('vehicle.delete', id=vehicle['id']) }}" method="post">
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+  </form>
+{% endblock %}

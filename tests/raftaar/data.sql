@@ -5,7 +5,7 @@ VALUES
 
 INSERT INTO vehicle (owner_id, name, vin, license_plate, year, make, model)
 VALUES
-  (2, 'Raftaar', 'Test VIN', 'Test License Plate', 'Test Year', 'Test Make', 'Test Model');
+  (1, 'Raftaar', 'Test VIN', 'Test License Plate', 'Test Year', 'Test Make', 'Test Model');
 
 INSERT INTO post (title, body, author_id, created)
 VALUES

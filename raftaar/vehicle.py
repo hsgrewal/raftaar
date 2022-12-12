@@ -10,8 +10,8 @@ from flask import (
 from werkzeug.exceptions import abort
 
 from raftaar.auth import login_required
-from raftaar.db import get_db
-from utils.enums import Color
+from raftaar.db import get_db, run_query
+from utils.enums import Color, Action
 
 bp = Blueprint('vehicle', __name__, url_prefix='/vehicle')
 
@@ -20,7 +20,7 @@ bp = Blueprint('vehicle', __name__, url_prefix='/vehicle')
 @login_required
 def index():
     db = get_db()
-    query = f"SELECT name, vin, license_plate, year, make, model, first_name || ' ' || last_name as owner FROM vehicle v JOIN user u ON v.owner_id = u.id WHERE v.owner_id = {g.user['id']} ORDER BY year DESC"
+    query = f"SELECT v.id, name, vin, license_plate, year, make, model, first_name || ' ' || last_name as owner FROM vehicle v JOIN user u ON v.owner_id = u.id WHERE v.owner_id = {g.user['id']}"
     vehicles = db.execute(query).fetchall()
     return render_template('vehicle/vehicle.html', vehicles=vehicles)
 
@@ -29,93 +29,76 @@ def index():
 @login_required
 def add():
     if request.method == 'POST':
-        name = request.form['name']
-        vin = request.form['vin']
-        license_plate = request.form['licensePlate']
-        year = request.form['year']
-        make = request.form['make']
-        model = request.form['model']
-        error = None
-
-        if not name:
-            error = 'Name is required'
-        elif not vin:
-            error = 'VIN is required'
-        elif not license_plate:
-            error = 'License Plate is required'
-        elif not year:
-            error = 'Year is required'
-        elif not make:
-            error = 'Make is required'
-        elif not model:
-            error = 'Model is required'
-
-        if error is not None:
-            flash(error, Color.warning.name)
+        result = post_action(Action.create)
+        if result is not None:
+            flash(result, Color.danger.name)
         else:
-            db = get_db()
-            db.execute(
-                'INSERT INTO vehicle (owner_id, name, vin, license_plate, year, make, model)'
-                ' VALUES (?, ?, ?, ?, ?, ?, ?)',
-                (g.user['id'], name, vin, license_plate, year, make, model)
-            )
-            db.commit()
             return redirect(url_for('vehicle.index'))
 
     return render_template('vehicle/add.html')
 
 
-# def get_post(id, check_author=True):
-#     post = get_db().execute(
-#         'SELECT p.id, title, body, created, author_id, username'
-#         ' FROM post p JOIN user u ON p.author_id = u.id'
-#         ' WHERE p.id = ?',
-#         (id,)
-#     ).fetchone()
+def get_vehicle(id, check_owner=True):
+    query = f'SELECT v.id, owner_id, name, vin, license_plate, year, make, model FROM vehicle v JOIN user u ON v.owner_id = u.id WHERE v.id = {id}'
+    vehicle = get_db().execute(query).fetchone()
 
-#     if post is None:
-#         abort(404, f"Post id {id} does not exist")
+    if vehicle is None:
+        abort(404, f'Vehicle id {id} does not exist')
 
-#     if check_author and post['author_id'] != g.user['id']:
-#         abort(403)
+    if check_owner and vehicle['owner_id'] != g.user['id']:
+        abort(403)
 
-#     return post
+    return vehicle
 
 
-# @bp.route('/<int:id>/update', methods=('GET', 'POST'))
-# @login_required
-# def update(id):
-#     post = get_post(id)
+@bp.route('/edit/<int:id>', methods=('GET', 'POST'))
+@login_required
+def edit(id):
+    vehicle = get_vehicle(id)
 
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         body = request.form['body']
-#         error = None
+    if request.method == 'POST':
+        result = post_action(Action.update, id)
+        if result is not None:
+            flash(result, Color.danger.name)
+        else:
+            return redirect(url_for('vehicle.index'))
 
-#         if not title:
-#             error = 'Title is required'
-
-#         if error is not None:
-#             flash(error, Color.warning.name)
-
-#         else:
-#             db = get_db()
-#             db.execute(
-#                 'UPDATE post SET title = ?, body = ?'
-#                 ' WHERE id = ?',
-#                 (title, body, id)
-#             )
-#             db.commit()
-#             return redirect(url_for('index'))
-
-#     return render_template('update.html', post=post)
+    return render_template('vehicle/edit.html', vehicle=vehicle)
 
 
-# @bp.route('/<int:id>/delete', methods=('POST',))
-# @login_required
-# def delete(id):
-#     get_post(id)
-#     db = get_db()
-#     db.execute('DELETE FROM post WHERE id = ?', (id,))
-#     db.commit()
-#     return redirect(url_for('index'))
+@bp.route('/delete/<int:id>', methods=('POST',))
+@login_required
+def delete(id):
+    get_vehicle(id)
+    query = f"DELETE FROM vehicle WHERE id = {id}"
+    run_query(query)
+    return redirect(url_for('vehicle.index'))
+
+
+def post_action(action, id=1):
+    name = request.form['name']
+    vin = request.form['vin']
+    license_plate = request.form['licensePlate']
+    year = request.form['year']
+    make = request.form['make']
+    model = request.form['model']
+
+    if not name:
+        return 'Name is required'
+    if not vin:
+        return 'VIN is required'
+    if not license_plate:
+        return 'License Plate is required'
+    if not year:
+        return 'Year is required'
+    if not make:
+        return 'Make is required'
+    if not model:
+        return 'Model is required'
+
+    if action is Action.create:
+        query = f"INSERT INTO vehicle (owner_id, name, vin, license_plate, year, make, model) VALUES ({g.user['id']}, '{name}', '{vin}', '{license_plate}', '{year}', '{make}', '{model}')"
+    else:
+        query = f"UPDATE vehicle SET name = '{name}', vin = '{vin}', license_plate = '{license_plate}', year = '{year}', make = '{make}', model = '{model}' WHERE id = {id}"
+
+    return None
