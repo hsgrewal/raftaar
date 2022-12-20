@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1 class="text-center">{% block title %}Edit Gas Purchase on "{{ gas['fdate'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form class="row g-2" method="post">
+    <div class="col-md-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" name="date" id="date" value="{{ request.form['date'] or gas['date']}}" required>
+    </div>
+    <div class="col-md-3">
+      <label for="gallons" class="form-label">Gallons</label>
+      <input type="number" min="0" max="15" step="0.001" class="form-control" name="gallons" id="gallons" placeholder="1.234" value="{{ request.form['gallons'] or gas['gallons'] }}" required>
+    </div>
+    <div class="col-md-3">
+      <label for="cost" class="form-label">Cost</label>
+      <input type="number" min="0" max="100" step="0.01" class="form-control" name="cost" id="cost" placeholder="25.25" value="{{ request.form['cost'] or gas['cost'] }}" required>
+    </div>
+    <div class="col-md-3">
+      <label for="mileage" class="form-label">Mileage</label>
+      <input type="number" min="0" step="1" class="form-control" name="mileage" id="mileage" placeholder="75000" value="{{ request.form['mileage'] or gas['mileage'] }}" required>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+  <hr>
+  <form action="{{ url_for('gas.delete', id=gas['id']) }}" method="post">
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+  </form>
+{% endblock %}
