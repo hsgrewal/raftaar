@@ -5,7 +5,8 @@ VALUES
 
 INSERT INTO vehicle (owner_id, name, vin, license_plate, year, make, model)
 VALUES
-  (1, 'Raftaar', 'Test VIN', 'Test License Plate', 'Test Year', 'Test Make', 'Test Model');
+  (1, 'Raftaar', 'Test VIN', 'Test License Plate', 'Test Year', 'Test Make', 'Test Model'),
+  (2, 'Toofaan', 'Test VIN', 'Test License Plate', 'Test Year', 'Test Make', 'Test Model');
 
 INSERT INTO gas (vehicle_id, date, gallons, cost, mileage)
 VALUES
