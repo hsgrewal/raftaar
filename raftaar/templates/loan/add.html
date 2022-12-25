@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1 class="text-center">{% block title %}Add Loan Payment{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form class="row g-2" method="post">
+    <div class="col-md-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" name="date" id="date" value="{{ request.form['date'] }}" required>
+    </div>
+    <div class="col-md-3">
+      <label for="amount" class="form-label">Amount</label>
+      <input type="number" min="0" step="1" class="form-control" name="amount" id="amount" placeholder="400" value="{{ request.form['amount'] }}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="memo" class="form-label">Memo</label>
+      <input class="form-control" name="memo" id="memo" placeholder="Memo" value="{{ request.form['memo'] }}" required>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </form>
+{% endblock %}

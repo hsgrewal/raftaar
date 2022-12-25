@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1 class="text-center">{% block title %}Edit Loan Payment on "{{ loan['fdate'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form class="row g-2" method="post">
+    <div class="col-md-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" name="date" id="date" value="{{ request.form['date'] or loan['date']}}" required>
+    </div>
+    <div class="col-md-3">
+      <label for="amount" class="form-label">Amount</label>
+      <input type="number" min="0" step="1" class="form-control" name="amount" id="amount" placeholder="400" value="{{ request.form['amount'] or loan['amount'] }}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="memo" class="form-label">Memo</label>
+      <input class="form-control" name="memo" id="memo" placeholder="Memo" value="{{ request.form['memo'] or loan['memo'] }}" required>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+  <hr>
+  <form action="{{ url_for('loan.delete', id=loan['id']) }}" method="post">
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</button>
+  </form>
+{% endblock %}
