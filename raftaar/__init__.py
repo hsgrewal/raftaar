@@ -36,6 +36,9 @@ def create_app(test_config=None):
     from . import gas
     app.register_blueprint(gas.bp)
 
+    from . import maintenance
+    app.register_blueprint(maintenance.bp)
+
     from . import loan
     app.register_blueprint(loan.bp)
 
