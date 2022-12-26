@@ -74,6 +74,16 @@ def edit(id):
 @login_required
 def delete(id):
     get_vehicle(id)
+    # Delete gas transactions for this vehicle
+    query = f"DELETE FROM gas WHERE vehicle_id = {id}"
+    run_query(query)
+    # Delete maintenance  for this vehicle
+    query = f"DELETE FROM maintenance WHERE vehicle_id = {id}"
+    run_query(query)
+    # Delete loan payments for this vehicle
+    query = f"DELETE FROM loan WHERE vehicle_id = {id}"
+    run_query(query)
+    # Delete vehicle
     query = f"DELETE FROM vehicle WHERE id = {id}"
     run_query(query)
     return redirect(url_for('vehicle.index'))

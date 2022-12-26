@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <header class="d-flex flex-wrap justify-content-center py-3">
+    <h1 class="d-flex align-items-center me-auto">{% block title %}Maintenance Log{% endblock %}</h1>
+    <ul class="nav nav-pills">
+      <li class="nav-item">
+        <a class="nav-link active" href="{{ url_for('maintenance.add') }}" aria-current="page">Add</a>
+      </li>
+    </ul>
+  </header>
+{% endblock %}
+
+{% block content %}
+{% if maintenance %}
+  <table class="table table-dark table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Cost</th>
+            <th scope="col">Mileage</th>
+            <th scope="col">Memo</th>
+            <th scope="col">Type</th>
+            <th scope="col">Vehicle</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for log in maintenance %}
+      <tr>
+        <td>{{ log['date'] }}</th>
+        <td>{{ log['cost'] }}</td>
+        <td>{{ log['mileage'] }}</td>
+        <td>{{ log['memo'] }}</td>
+        <td>{{ log['type'] }}</td>
+        <td>{{ log['name'] }}</td>
+        <td><a class="btn btn-primary btn-sm" href="{{ url_for('maintenance.edit', id=log['id']) }}">Edit</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+<p>No maintenance found. Please add one.</p>
+{% endif %}
+{% endblock %}

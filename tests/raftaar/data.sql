@@ -12,6 +12,10 @@ INSERT INTO gas (vehicle_id, date, gallons, cost, mileage)
 VALUES
   (1, '2022-01-01 07:15:30.123', 9.185, 35.27, 75000);
 
+INSERT INTO maintenance (vehicle_id, date, cost, mileage, memo, type)
+VALUES
+  (1, '2022-01-01 07:15:30.123', 285.47, 56214, 'Test Maintenance', 'Test Service');
+
 INSERT INTO loan (vehicle_id, date, amount, memo)
 VALUES
   (1, '2022-01-01 07:15:30.123', 435.25, 'Test Payment');
