@@ -36,6 +36,9 @@ def create_app(test_config=None):
     from . import gas
     app.register_blueprint(gas.bp)
 
+    from . import loan
+    app.register_blueprint(loan.bp)
+
     from . import main
     app.register_blueprint(main.bp)
     app.add_url_rule('/', endpoint='index')

@@ -49,7 +49,6 @@ CREATE TABLE loan (
   vehicle_id INTEGER NOT NULL,
   date TEXT NOT NULL,
   amount REAL NOT NULL,
-  cost REAL NOT NULL,
   memo TEXT NOT NULL,
   FOREIGN KEY (vehicle_id) REFERENCES vehicle (id)
 );
