@@ -13,15 +13,6 @@ CREATE TABLE user (
   last_name TEXT NOT NULL
 );
 
-CREATE TABLE post (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  author_id INTEGER NOT NULL,
-  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  title TEXT NOT NULL,
-  body TEXT,
-  FOREIGN KEY (author_id) REFERENCES user (id)
-);
-
 CREATE TABLE vehicle (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   owner_id INTEGER NOT NULL,
@@ -60,6 +51,5 @@ CREATE TABLE maintenance (
   cost REAL NOT NULL,
   mileage INTEGER NOT NULL,
   memo TEXT NOT NULL,
-  type TEXT NOT NULL,
   FOREIGN KEY (vehicle_id) REFERENCES vehicle (id)
 );

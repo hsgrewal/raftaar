@@ -22,10 +22,6 @@
       <label for="memo" class="form-label">Memo</label>
       <input class="form-control" name="memo" id="memo" placeholder="Memo" value="{{ request.form['memo'] or maintenance['memo'] }}" required>
     </div>
-    <div class="col-md-3">
-      <label for="type" class="form-label">Type</label>
-      <input class="form-control" name="type" id="type" placeholder="Type" value="{{ request.form['type'] or maintenance['type'] }}" required>
-    </div>
     <div class="col-12">
       <button type="submit" class="btn btn-primary">Save</button>
     </div>

@@ -21,7 +21,7 @@ bp = Blueprint('maintenance', __name__, url_prefix='/maintenance')
 def index():
     db = get_db()
     query = f"""SELECT m.id, vehicle_id, strftime('%m/%d/%Y', date) as date,
-        cost, mileage, memo, type, name FROM maintenance m
+        cost, mileage, memo, name FROM maintenance m
         JOIN vehicle v ON m.vehicle_id = v.id
         WHERE v.owner_id = {g.user['id']}"""
     maintenance = db.execute(query).fetchall()
@@ -42,7 +42,7 @@ def add():
 
 
 def get_maintenance(id, check_vehicle=True):
-    query = f"""SELECT m.id, vehicle_id, date, cost, mileage, memo, type,
+    query = f"""SELECT m.id, vehicle_id, date, cost, mileage, memo,
         strftime('%m/%d/%Y', date) as fdate FROM maintenance m
         JOIN vehicle v ON m.vehicle_id = v.id WHERE m.id = {id}"""
     maintenance = get_db().execute(query).fetchone()
@@ -85,7 +85,6 @@ def post_action(action, id=1):
     cost = request.form['cost']
     mileage = request.form['mileage']
     memo = request.form['memo']
-    type = request.form['type']
 
     if not date:
         return 'Date is required'
@@ -95,16 +94,14 @@ def post_action(action, id=1):
         return 'Mileage is required'
     if not memo:
         return 'Memo is required'
-    if not type:
-        return 'Type is required'
 
     if action is Action.create:
         # TODO update query with vehicle_id
-        query = f"""INSERT INTO maintenance (vehicle_id, date, cost, mileage, memo, type)
-            VALUES (1, '{date}', {cost}, {mileage}, '{memo}', '{type}')"""
+        query = f"""INSERT INTO maintenance (vehicle_id, date, cost, mileage, memo)
+            VALUES (1, '{date}', {cost}, {mileage}, '{memo}')"""
     else:
         query = f"""UPDATE maintenance SET date = '{date}', cost = {cost},
-            mileage = {mileage}, memo = '{memo}', type = '{type}' WHERE id = {id}"""
+            mileage = {mileage}, memo = '{memo}' WHERE id = {id}"""
 
     run_query(query)
     return None

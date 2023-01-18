@@ -10,7 +10,7 @@ html: coverage
 	coverage html
 
 run:
-	flask --app raftaar --debug run --port 5050 --host=0.0.0.0
+	flask --app raftaar --debug run --port 5050
 
 db:
 	flask --app raftaar init-db

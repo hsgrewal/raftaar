@@ -69,8 +69,7 @@ def test_add(client, auth, app):
         'date': '2022-12-19',
         'cost': 365.24,
         'mileage': 65000,
-        'memo': 'Test Maintenance',
-        'type': 'Test type'
+        'memo': 'Test Maintenance'
     })
 
     with app.app_context():
@@ -86,8 +85,7 @@ def test_edit(client, auth, app):
         'date': '2022-12-19',
         'cost': 365.24,
         'mileage': 65000,
-        'memo': 'Test Maintenance',
-        'type': 'Test type'
+        'memo': 'Test Maintenance'
     })
 
     with app.app_context():
@@ -97,31 +95,25 @@ def test_edit(client, auth, app):
         assert maintenance['cost'] == 365.24
         assert maintenance['mileage'] == 65000
         assert maintenance['memo'] == 'Test Maintenance'
-        assert maintenance['type'] == 'Test type'
 
 
-@pytest.mark.parametrize(('path', 'date', 'cost', 'mileage', 'memo', 'type', 'message'), (
-    ('/maintenance/add', '', '', '', '', '', b'Date is required'),
-    ('/maintenance/add', '2022-12-19', '', '', '', '', b'Cost is required'),
-    ('/maintenance/add', '2022-12-19', '365.24', '', '', '', b'Mileage is required'),
-    ('/maintenance/add', '2022-12-19', '365.24', '65000', '', '', b'Memo is required'),
-    ('/maintenance/add', '2022-12-19', '365.24', '65000', 'Test', '', b'Type is required'),
-    ('/maintenance/edit/1', '', '', '', '', '', b'Date is required'),
-    ('/maintenance/edit/1', '2022-12-19', '', '', '', '', b'Cost is required'),
-    ('/maintenance/edit/1', '2022-12-19', '365.24', '', '', '', b'Mileage is required'),
-    ('/maintenance/edit/1', '2022-12-19', '365.24', '65000', '', '', b'Memo is required'),
-    ('/maintenance/edit/1', '2022-12-19', '365.24', '65000', 'Test', '', b'Type is required'),
+@pytest.mark.parametrize(('path', 'date', 'cost', 'mileage', 'memo', 'message'), (
+    ('/maintenance/add', '', '', '', '', b'Date is required'),
+    ('/maintenance/add', '2022-12-19', '', '', '', b'Cost is required'),
+    ('/maintenance/add', '2022-12-19', '365.24', '', '', b'Mileage is required'),
+    ('/maintenance/add', '2022-12-19', '365.24', '65000', '', b'Memo is required'),
+    ('/maintenance/edit/1', '', '', '', '', b'Date is required'),
+    ('/maintenance/edit/1', '2022-12-19', '', '', '', b'Cost is required'),
+    ('/maintenance/edit/1', '2022-12-19', '365.24', '', '', b'Mileage is required'),
+    ('/maintenance/edit/1', '2022-12-19', '365.24', '65000', '', b'Memo is required'),
 ))
-def test_create_update_validate(
-        client, auth, path, date, cost, mileage, memo, type, message
-    ):
+def test_create_update_validate(client, auth, path, date, cost, mileage, memo, message):
     auth.login()
     response = client.post(path, data={
         'date': date,
         'cost': cost,
         'mileage': mileage,
-        'memo': memo,
-        'type': type
+        'memo': memo
     })
     assert message in response.data
 
